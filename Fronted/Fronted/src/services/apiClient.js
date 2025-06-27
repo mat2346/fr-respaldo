@@ -1,8 +1,17 @@
 import axios from 'axios';
 
+// Obtener URL del backend desde variables de entorno
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://34.226.124.206:8000';
+
+// Detectar si estamos en producción (HTTPS) o desarrollo (HTTP)
+const isProduction = window.location.protocol === 'https:';
+const baseURL = isProduction 
+  ? '/api/proxy/'  // Usar proxy en producción (HTTPS)
+  : `${BACKEND_URL}/`; // Directo en desarrollo (HTTP)
+
 // Cliente base para todas las peticiones autenticadas
 const api = axios.create({
-  baseURL: 'http://34.226.124.206:8000/',
+  baseURL,
 });
 
 // Interceptor para añadir el token de autenticación a todas las solicitudes
@@ -52,12 +61,17 @@ api.interceptors.response.use(
 );
 
 // Cliente para peticiones públicas (sin autenticación)
+const publicBaseURL = isProduction 
+  ? '/api/proxy'  // Usar proxy en producción (HTTPS)
+  : BACKEND_URL; // Directo en desarrollo (HTTP)
+
 const publicApi = axios.create({
-  baseURL: 'http://34.226.124.206:8000',
+  baseURL: publicBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
+
 
 // Asegurar que la exportación sea correcta
 export { publicApi };
