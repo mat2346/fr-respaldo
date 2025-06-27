@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Cliente base para todas las peticiones autenticadas
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/',
+  baseURL: 'http://34.226.124.206:8000/',
 });
 
 // Interceptor para añadir el token de autenticación a todas las solicitudes
@@ -53,7 +53,7 @@ api.interceptors.response.use(
 
 // Cliente para peticiones públicas (sin autenticación)
 const publicApi = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: 'http://34.226.124.206:8000',
   headers: {
     'Content-Type': 'application/json',
   },
